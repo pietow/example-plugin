@@ -4,6 +4,3 @@
 [submodule "lua/example-plugin/deps/lua-xsys"]
 	path = lua/example-plugin/deps/lua-xsys
 	url = https://github.com/stepelu/lua-xsys.git
-[submodule "lua/example-plugin/deps/luasocket"]
-	path = lua/example-plugin/deps/luasocket
-	url = https://github.com/lunarmodules/luasocket.git

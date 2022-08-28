@@ -1,0 +1,7 @@
+
+*.gz
+
+
+/lua/example-plugin/deps/lua-5.1.5/
+/lua/example-plugin/deps/lua-5.3.5/
+/lua/example-plugin/deps/luarocks-3.8.0/

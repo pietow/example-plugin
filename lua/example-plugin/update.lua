@@ -1,5 +1,6 @@
 -- Imports the module for handling SQLite.
 local sqlite = require("ljsqlite3")
+local socket = require("socket")
 
 -- Creates an object for the module.
 local M = {}
@@ -8,14 +9,23 @@ local M = {}
 -- user to enter a description.
 function M.insert_todo()
     local todo_description = ""
-    repeat
-        todo_description = vim.fn.input("Enter a description (150 characters or fewer): ")
-        print("")
-    until (todo_description ~= "") and (string.len(todo_description) <= 150)
+    --get current location --
+    local lineNum,col = unpack(vim.api.nvim_win_get_cursor(0))
 
-    local db = sqlite.open("todo.db")
-    db:exec("INSERT INTO todo_list (description) VALUES ('" .. todo_description .. "');")
+    --get above line --
+    local content = vim.api.nvim_buf_get_lines(0, lineNum - 1, vim.api.nvim_buf_line_count(0), false)
+    content = unpack(content) 
+    print(content)
+    -- repeat
+    --     todo_description = vim.fn.input("Enter a description (150 characters or fewer): ")
+    --     print("")
+    -- until (todo_description ~= "") and (string.len(todo_description) <= 150)
+    local db = sqlite.open("./todo.db")
+    db:exec("INSERT INTO todo_list (description) VALUES ('" .. content .."');")
     db:close()
+
+
+
 end
 
 -- Marks a todo task completed. Lists open
