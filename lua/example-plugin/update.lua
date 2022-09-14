@@ -1,6 +1,8 @@
 -- Imports the module for handling SQLite.
 local sqlite = require("ljsqlite3")
-local socket = require("socket")
+local http = require("socket.http")
+local ltn12 = require("ltn12")
+local json = require "dkjson"
 
 -- Creates an object for the module.
 local M = {}
@@ -15,14 +17,19 @@ function M.insert_todo()
     --get above line --
     local content = vim.api.nvim_buf_get_lines(0, lineNum - 1, vim.api.nvim_buf_line_count(0), false)
     content = unpack(content) 
-    print(content)
+    -- print(content)
+    local request_body = { payload = content } --the json body
+    request_body = json.encode(request_body)
+    b, c, h = http.request {url="http://localhost:8080/", method="POST", headers={["Content-Type"]="application/json"}, source=ltn12.source.string(request_body)}
+    -- b, c, h = http.request("http://localhost:8080/")
+    -- print(b, c, h)
     -- repeat
     --     todo_description = vim.fn.input("Enter a description (150 characters or fewer): ")
     --     print("")
     -- until (todo_description ~= "") and (string.len(todo_description) <= 150)
-    local db = sqlite.open("./todo.db")
-    db:exec("INSERT INTO todo_list (description) VALUES ('" .. content .."');")
-    db:close()
+    -- local db = sqlite.open("./todo.db")
+    -- db:exec("INSERT INTO todo_list (description) VALUES ('" .. content .."');")
+    -- db:close()
 
 
 
